@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider                  = "prisma-erd-generator"
+  output                    = "ERD.md"
+  includeRelationFromFields = "true"
+  theme                     = "forest"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Posts {
+  id    Int    @id @default(autoincrement())
+  title String
+  body  String
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String @unique(map: "name")
+  password String
+
+  @@map("users")
+}
+
+model Task {
+  id      Int    @id @default(autoincrement())
+  user_id Int
+  task    String
+
+  @@map("tasks")
+}
